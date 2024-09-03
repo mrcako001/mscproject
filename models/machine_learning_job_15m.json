@@ -1,0 +1,52 @@
+{
+  "job_id": "anomaly_detection_15m",
+  "groups": ["darpa_51-75"],
+  "description": "more focused with less time span",
+  "analysis_config": {
+    "bucket_span": "15m",
+    "detectors": [
+      {
+        "function": "count",
+        "partition_field_name": "hostname.keyword"
+      },
+      {
+        "function": "mean",
+        "field_name": "pid",
+        "partition_field_name": "hostname.keyword"
+      },
+      {
+        "function": "sum",
+        "field_name": "ppid",
+        "partition_field_name": "hostname.keyword"
+      },
+      {
+        "function": "distinct_count",
+        "field_name": "properties.image_path.keyword",
+        "partition_field_name": "hostname.keyword"
+      }
+    ],
+    "influencers": [
+      "hostname.keyword",
+      "principal.keyword",
+      "properties.acuity.level.keyword"
+    ]
+  },
+  "analysis_limits": {
+    "model_memory_limit": "19mb",
+    "categorization_examples_limit": 4
+  },
+  "model_snapshot_retention_days": 10,
+  "results_retention_days": 30,
+  "data_description": {
+    "time_field": "timestamp",
+    "time_format": "epoch_ms"
+  },
+  "datafeed_config": {
+    "datafeed_id": "datafeed-anomaly_detection_1m",
+    "indices": ["darpa_51-75"],
+    "job_id": "anomaly_detection_1m",
+    "query": {
+      "match_all": {}
+    }
+  }
+}
